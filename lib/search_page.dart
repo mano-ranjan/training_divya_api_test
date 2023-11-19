@@ -14,6 +14,8 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   SearchModel searchModel = SearchModel();
   String buttonText = "Search";
+  String? networkUrl;
+
   TextEditingController searchController = TextEditingController();
 
   @override
@@ -30,26 +32,21 @@ class _SearchPageState extends State<SearchPage> {
             SearchBar(
               controller: searchController,
             ),
+            networkUrl != null ? Image.network(networkUrl!) : Container(),
+            const SizedBox(
+              height: 20,
+            ),
             MaterialButton(
               color: Colors.amberAccent,
               onPressed: () async {
-                print("dkvfjbksdvjb ${searchController.text}");
                 searchModel = SearchModel();
                 searchModel = await ApiBaseHelper()
                     .getSearchResponse(searchController.text);
                 setState(() {
-                  buttonText = searchModel.drinks![1].strDrinkThumb!;
+                  networkUrl = searchModel.drinks![1].strDrinkThumb!;
                 });
-                print(buttonText);
-                // var res = await http.get(Uri.parse(
-                //     "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=mango"));
-                // var jsonres = convert.jsonDecode(res.body);
-                // searchModel = SearchModel.fromJson(jsonres);
-                // print("yup yup ${searchModel.drinks?[0].strDrink}");
               },
-              child: buttonText == "Search"
-                  ? Text(buttonText)
-                  : Image.network(buttonText),
+              child: Text(buttonText),
             )
           ],
         ),
