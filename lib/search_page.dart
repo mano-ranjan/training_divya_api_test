@@ -38,15 +38,18 @@ class _SearchPageState extends State<SearchPage> {
                 searchModel = await ApiBaseHelper()
                     .getSearchResponse(searchController.text);
                 setState(() {
-                  buttonText = searchModel.drinks![0].strDrink!;
+                  buttonText = searchModel.drinks![1].strDrinkThumb!;
                 });
+                print(buttonText);
                 // var res = await http.get(Uri.parse(
                 //     "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=mango"));
                 // var jsonres = convert.jsonDecode(res.body);
                 // searchModel = SearchModel.fromJson(jsonres);
                 // print("yup yup ${searchModel.drinks?[0].strDrink}");
               },
-              child: Text(buttonText),
+              child: buttonText == "Search"
+                  ? Text(buttonText)
+                  : Image.network(buttonText),
             )
           ],
         ),
